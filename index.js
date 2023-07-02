@@ -19,6 +19,16 @@ const getImageLinkFromElement = (elements) => {
     }
 }
 
+const getTextFromHeader = (element) => {
+    let name = undefined;
+    for (let y = 0; y < element.children.length; y++) {
+        if (element.children[y].attribs.class.includes('e-title')) {
+            name = element.children[y].children[0].attribs['aria-label'];
+        }
+    }
+    return name;
+}
+
 
 const getArticlesInformationFromElement = (element, region) => {
     let article = {};
@@ -41,10 +51,10 @@ const getArticlesInformationFromElement = (element, region) => {
                 if (children.attribs.class.includes('container-text')) {
                     let contentText =  children.children[0];
                     for (let index = 0; index < contentText.children.length; index++) {
-                        if (contentText.children[index].name === 'header'){
-                            article.name = contentText.children[index].children[0].children[0].attribs['aria-label'];
+                        if (contentText.children[index].name === 'header') {
+                           article.name = getTextFromHeader(contentText.children[index]);
                         } else if (contentText.children[index].name === 'p') {
-                            article.summary = contentText.children[index].children[0].data;
+                           article.summary = contentText.children[index].children[0].data;
                         }
                     }
                 }
